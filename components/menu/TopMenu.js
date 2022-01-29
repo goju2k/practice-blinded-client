@@ -1,13 +1,7 @@
-//hook
-import { useState } from 'react';
+export default function TopMenu({children, items, itemClick}) {
 
-export default function TopMenu({children, initItems, itemClick}) {
-    
-    const [items, setItems] = useState(initItems)
-    if(items != initItems){
-        setItems(initItems)
-    }
-    
+    console.log('[TopMenu] start');
+
     const styleContainer = {
 
         //size
@@ -54,7 +48,7 @@ export default function TopMenu({children, initItems, itemClick}) {
         <div style={styleContainer}>
             
             {!items ? <div>loading...</div> : items.map((item, i) => {
-                return <div key={item.id} style={item.focus?styleItemFocus:styleItem} onClick={itemClick.bind(null, item, items, setItems)}>{item.name}</div>
+                return <div key={item.id} style={item.focus?styleItemFocus:styleItem} onClick={itemClick.bind(null, item, items)}>{item.name}</div>
             })}
             
         </div>

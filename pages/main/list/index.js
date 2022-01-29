@@ -6,7 +6,6 @@ import BaseLayout from '/components/layout/BaseLayout.js'
 import TopMenu from '/components/menu/TopMenu.js'
 
 //api
-import api from '/modules/api'
 import axios from 'axios'
 
 //hook
@@ -16,11 +15,17 @@ export default function MainList() {
     
     console.log('[MainList] start');
 
+    /**
+     * === [Category Start] ======================================================
+     */
+
     //category 초기화
     const [categoryList, setCategoryList] = useState()
-    let data = api.get('/category/list')
-    if(data && categoryList != data){
-        
+
+    //category 는 한번만 조회
+    useEffect(async ()=>{
+
+        const {data} = await axios.get('/api/category/list')
         data && data.forEach(elem => {
             if(elem.id == 1){
                 elem.focus = true
@@ -30,22 +35,29 @@ export default function MainList() {
         });
 
         setCategoryList(data)
-    }
+        
+    }, [])
 
-    //boardList 초기화
-    const [boardList, setBoardList] = useState()
-    console.log('boardList => ',boardList);
-    if(boardList === undefined){
-        //setBoardList(api.get('/board/list'))
-    }
-    
-    const itemClick = function(item, items, setItems){
+    /**
+     * === [Board List Start] ======================================================
+     */
 
-        let targetId
+    //curr Category - 초기값 : id:1
+    const [currCategoryId, setCurrCategoryId] = useState(1)
+    const [boardList, setBoardList] = useState([])
+    useEffect(async ()=>{
+        const {data} = await axios.get('/api/board/list', {params:{inqType:'1', id:currCategoryId}})
+        setBoardList(data)
+    }, [currCategoryId])
 
-        console.log('click item => ',item);
-        console.log('click item list => ',items);
+    /**
+     * === [event] ======================================================
+     */
 
+    //Category 변경 이벤트 처리
+    const itemClick = function(item, items){
+
+        let targetId;
         items.forEach((i)=>{
             if(item.id != i.id){
                 i.focus = false;
@@ -56,18 +68,17 @@ export default function MainList() {
         })
         
         if(targetId >= 0){
-            axios.get('/api/board/list',  {params: {inqType:'1', id:targetId}}).then((res)=>{
-                setBoardList(res.data)
-            })
+            console.log('target ID changed!!!');
+            setBoardList(null) //리스트 초기화
+            setCurrCategoryId(targetId) //Category 변경
         }
-        setItems([...items])
-
+        
     }
     
     return (
         <BaseLayout>
 
-          <TopMenu initItems={data} itemClick={itemClick}></TopMenu>
+          <TopMenu items={categoryList} itemClick={itemClick}></TopMenu>
           {console.log('[render] boardList => ', boardList)}
           {!boardList ? <div style={{padding:'15px 10px'}}>loading...</div> : boardList.map((item, i) => {
                 return <div style={{padding:'15px 10px'}} key={item.cid} >{item.title}</div>
