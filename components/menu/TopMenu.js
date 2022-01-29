@@ -1,9 +1,6 @@
 //hook
 import { useState } from 'react';
 
-//api
-import api from '/modules/api'
-
 export default function TopMenu({children, initItems, itemClick}) {
     
     const [items, setItems] = useState(initItems)

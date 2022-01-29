@@ -54,7 +54,7 @@ export default function MainList() {
                 targetId = i.id
             }
         })
-        api.get('/category/list')
+        
         if(targetId >= 0){
             axios.get('/api/board/list',  {params: {inqType:'1', id:targetId}}).then((res)=>{
                 setBoardList(res.data)
