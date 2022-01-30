@@ -3,6 +3,20 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Link from 'next/link'
 
+import axios from 'axios'
+
+// Add a request interceptor
+axios.interceptors.request.use(function (config) {
+
+  config.url = 'http://localhost:3001'+config.url.replace('/api', '')
+  console.log('axios config : ',config)
+  // Do something before request is sent
+  return config;
+}, function (error) {
+  // Do something with request error
+  return Promise.reject(error);
+});
+
 export default function Home() {
   return (
     <div className={styles.container}>
