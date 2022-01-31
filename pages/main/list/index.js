@@ -25,7 +25,7 @@ export default function MainList() {
     //category 는 한번만 조회
     useEffect(async ()=>{
 
-        const {data} = await axios.get('/api/category/list')
+        const {data} = await axios.get('category/list')
         data && data.forEach(elem => {
             if(elem.id == 1){
                 elem.focus = true
@@ -35,7 +35,7 @@ export default function MainList() {
         });
 
         setCategoryList(data)
-        
+
     }, [])
 
     /**
@@ -46,7 +46,7 @@ export default function MainList() {
     const [currCategoryId, setCurrCategoryId] = useState(1)
     const [boardList, setBoardList] = useState([])
     useEffect(async ()=>{
-        const {data} = await axios.get('/api/board/list', {params:{inqType:'1', id:currCategoryId}})
+        const {data} = await axios.get('board/list', {params:{inqType:'1', id:currCategoryId}})
         setBoardList(data)
     }, [currCategoryId])
 
