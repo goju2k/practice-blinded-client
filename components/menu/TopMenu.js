@@ -20,7 +20,7 @@ export default function TopMenu({children, items, itemClick}) {
         //기본 폰트
         fontSize:'12px',
         color:'gray',
-        background:'black',
+        background:'#222222',
         fontWeight:'600'
 
     }
@@ -36,6 +36,12 @@ export default function TopMenu({children, items, itemClick}) {
         padding:'5px 20px',
         whiteSpace:'nowrap',
         width:'fit-content',
+
+        //animation
+        transition:'font-size 0.3s',
+
+        //etc
+        cursor:'pointer'
 
     }
 
