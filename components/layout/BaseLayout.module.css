@@ -1,0 +1,31 @@
+.loadingContainer{
+    position:fixed;
+    left:0px;
+    top:0px;
+    width:100vw;
+    height:100vh;
+    background:gray;
+    opacity:0.3;
+    z-index:100;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+  .loadingBar{
+    width:150px;
+    height:30px;
+    position:relative;
+    overflow:hidden;
+  }
+  .loadingMove{
+    position: absolute;
+    left:0px;
+    top:0px;
+    width:50px;
+    height:100%;
+    background:red;
+    border-radius: 15px;
+    animation: 0.3s ease-in 0s infinite alternate move_h;
+  }
+
+  @keyframes move_h { from { left: 0px; } to { left: 100px; }  }

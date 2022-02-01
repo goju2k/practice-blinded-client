@@ -14,6 +14,11 @@ import { useState, useEffect } from 'react';
 export default function MainList() {
     
     console.log('[MainList] start');
+    /**
+     * === [Loading Start] ======================================================
+     */
+     const [loading, setLoading] = useState(false)
+     const loadingProp = {loading, setLoading}
 
     /**
      * === [Category Start] ======================================================
@@ -21,7 +26,6 @@ export default function MainList() {
 
     //category 초기화
     const [categoryList, setCategoryList] = useState()
-
     //category 는 한번만 조회
     useEffect(async ()=>{
 
@@ -48,6 +52,7 @@ export default function MainList() {
     useEffect(async ()=>{
         const {data} = await axios.get('board/list', {params:{inqType:'1', id:currCategoryId}})
         setBoardList(data)
+        setLoading(false)
     }, [currCategoryId])
 
     /**
@@ -71,12 +76,13 @@ export default function MainList() {
             console.log('target ID changed!!!');
             setBoardList(null) //리스트 초기화
             setCurrCategoryId(targetId) //Category 변경
+            setLoading(true)
         }
         
     }
     
     return (
-        <BaseLayout>
+        <BaseLayout loadingProp={loadingProp}>
 
           <TopMenu items={categoryList} itemClick={itemClick}></TopMenu>
           {console.log('[render] boardList => ', boardList)}
