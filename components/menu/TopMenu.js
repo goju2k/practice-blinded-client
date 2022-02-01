@@ -53,7 +53,7 @@ export default function TopMenu({children, items, itemClick}) {
         
         <div style={styleContainer}>
             
-            {!items ? <div>loading...</div> : items.map((item, i) => {
+            {items && items.map((item, i) => {
                 return <div key={item.id} style={item.focus?styleItemFocus:styleItem} onClick={itemClick.bind(null, item, items)}>{item.name}</div>
             })}
             

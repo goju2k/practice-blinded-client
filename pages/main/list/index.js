@@ -28,7 +28,8 @@ export default function MainList() {
     const [categoryList, setCategoryList] = useState()
     //category 는 한번만 조회
     useEffect(async ()=>{
-
+        
+        setLoading(true)
         const {data} = await axios.get('category/list')
         data && data.forEach(elem => {
             if(elem.id == 1){
@@ -39,6 +40,7 @@ export default function MainList() {
         });
 
         setCategoryList(data)
+        setLoading(false)
 
     }, [])
 
@@ -84,9 +86,10 @@ export default function MainList() {
     return (
         <BaseLayout loadingProp={loadingProp}>
 
-          <TopMenu items={categoryList} itemClick={itemClick}></TopMenu>
-          {console.log('[render] boardList => ', boardList)}
-          {!boardList ? <div style={{padding:'15px 10px'}}>loading...</div> : boardList.map((item, i) => {
+            <TopMenu items={categoryList} itemClick={itemClick}></TopMenu>
+
+            {console.log('[render] boardList => ', boardList)}
+            {boardList && boardList.map((item, i) => {
                 return <div style={{padding:'15px 10px'}} key={item.cid} >{item.title}</div>
             })}
 
