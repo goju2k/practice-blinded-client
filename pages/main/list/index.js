@@ -4,6 +4,7 @@ import styles from '/styles/main/list/List.module.css'
 //components
 import BaseLayout from '/components/layout/BaseLayout.js'
 import TopMenu from '/components/menu/TopMenu.js'
+import BoardList from '/components/menu/BoardList.js'
 
 //api
 import axios from 'axios'
@@ -64,13 +65,15 @@ export default function MainList() {
     //Category 변경 이벤트 처리
     const itemClick = function(item, items){
 
-        let targetId;
+        let targetId = -1;
         items.forEach((i)=>{
             if(item.id != i.id){
                 i.focus = false;
             }else{
+                if(i.focus !== true){
+                    targetId = i.id
+                }
                 i.focus = true;
-                targetId = i.id
             }
         })
         
@@ -82,16 +85,24 @@ export default function MainList() {
         }
         
     }
+
+    //boardItemClick 이벤트
+    const boardItemClick = function(item){
+
+        
+
+    }
     
     return (
         <BaseLayout loadingProp={loadingProp}>
 
             <TopMenu items={categoryList} itemClick={itemClick}></TopMenu>
 
-            {console.log('[render] boardList => ', boardList)}
-            {boardList && boardList.map((item, i) => {
+            <BoardList items={boardList} itemClick={boardItemClick}></BoardList>
+
+            {/* {boardList && boardList.map((item, i) => {
                 return <div style={{padding:'15px 10px'}} key={item.cid} >{item.title}</div>
-            })}
+            })} */}
 
         </BaseLayout>
     )
