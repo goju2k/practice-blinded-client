@@ -17,6 +17,4 @@ axios.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 
-export default function(){
-    console.log('[axios] init ok')
-}
+export default axios

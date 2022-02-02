@@ -7,7 +7,7 @@ import TopMenu from '/components/menu/TopMenu.js'
 import BoardList from '/components/menu/BoardList.js'
 
 //api
-import axios from 'axios'
+import axios from '/modules/axios'
 
 //hook
 import { useState, useEffect } from 'react';
