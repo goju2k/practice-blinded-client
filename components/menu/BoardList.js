@@ -132,11 +132,11 @@ export default function BoardList({children, items, itemClick}) {
         <div style={styleContainer}>
 
             {items && items.map((item, i) => {
-                return <div>
+                return <div key={item.id}>
                     
                     {i === 0 && <div style={styleBar}></div>}
 
-                    <div style={styleItem} key={item.id} onClick={itemClick.bind(null, item, items)}>
+                    <div style={styleItem} onClick={itemClick.bind(null, item, items)}>
 
                         <div style={styleTop}>
 
