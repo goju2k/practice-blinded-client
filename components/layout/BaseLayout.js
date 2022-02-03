@@ -13,7 +13,7 @@ const defaultConfig = {
 function LoadingComponent(){
   
     const { loading, setLoading } = useContext(LoadingContext);
-    console.log('[Loading] loading => ',loading)
+    //console.log('[Loading] loading => ',loading)
     return loading &&
     <div className={styles.loadingContainer}>
         <div className={styles.loadingBar}>
@@ -29,7 +29,7 @@ export default function BaseLayout({children, config, loadingProp}) {
     const thisConfig = {}
     Object.assign(thisConfig, defaultConfig)
     Object.assign(thisConfig, config)
-    console.log('thisConfig => ', thisConfig);
+    //console.log('thisConfig => ', thisConfig);
 
     const styleContainer = {
         width:'100%',
@@ -43,7 +43,7 @@ export default function BaseLayout({children, config, loadingProp}) {
     }
 
     //loading state
-    console.log('[BaseLayout] loadingProp ', loadingProp);
+    //console.log('[BaseLayout] loadingProp ', loadingProp);
     
     return (
         <LoadingContext.Provider value={loadingProp}>
