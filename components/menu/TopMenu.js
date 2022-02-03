@@ -1,3 +1,4 @@
+//style object
 const styleContainer = {
 
     //size
@@ -44,19 +45,120 @@ const styleItem = {
 const styleItemFocus = Object.assign({}, styleItem);
 styleItemFocus.color = 'white'
 styleItemFocus.fontSize = '15px'
-    
+
+//common function
+const setToCenter = function(elem, currItemId){
+    for(let child of elem.children){
+        if(child.dataset.id == currItemId){
+            elem.scrollLeft = child.offsetLeft - (elem.offsetWidth/2) + (child.offsetWidth/2)
+            break
+        }
+    }
+}
+
+//hook
+import { useState, useEffect, useRef } from 'react';
+
 export default function TopMenu({children, items, itemClick}) {
 
     console.log('[TopMenu] start');
 
+    /**
+     * === [curr item change] ======================================================
+     */
+    const [currItemId, setCurrItemId] = useState(null);
+    const refContainer = useRef(null)
+
+    if(currItemId === null && items){
+        const [initActiveItem] = items.filter(item=>item.focus === true)
+        if(initActiveItem){
+            setCurrItemId(initActiveItem.id)
+        }
+    }
+
+    useEffect(()=>{
+
+        const elem = refContainer.current
+        console.log('currItemId=>',currItemId, elem.children);
+        if(elem && elem.children[0]){
+            setToCenter(elem, currItemId)
+        }
+
+    }, [currItemId])
+
+    /**
+     * === [side margin div] ======================================================
+     */
+    const [leftMarginStyle, setLeftMarginStyle] = useState(null);
+    const [rightMarginStyle, setRightMarginStyle] = useState(null);
+    const [marginCreatedInit, setMarginCreatedInit] = useState(false);
+    
+    useEffect(()=>{
+
+        const elem = refContainer.current
+        
+        //side margin style 최초 설정
+        if(leftMarginStyle == null && rightMarginStyle == null){
+
+            if(elem && elem.children[0]){
+
+                setLeftMarginStyle({minWidth:elem.offsetWidth / 2})
+
+                const lastElem = elem.children[elem.children.length - 1]
+                setRightMarginStyle({minWidth:(elem.offsetWidth / 2) - (lastElem.offsetWidth / 2)})
+                
+                console.log('margin style set!!!');
+
+            }
+
+        //side margin 설정후에 active item 위치 center 초기화
+        }else if(marginCreatedInit === false){
+
+            //flag true
+            setMarginCreatedInit(true)
+            console.log('marginCreatedInit set!!!');
+
+            //center
+            setToCenter(elem, currItemId)
+
+            // observe elems
+            resizeObserver.observe(elem);
+
+        }
+
+    })
+
+    /**
+     * === [event] ======================================================
+     */
+
+    //resize
+    const [resizeObserver] = useState(new ResizeObserver( entries => {
+        console.log('ResizeObserver start =>',entries)
+        setCurrItemId(null)
+        setLeftMarginStyle(null)
+        setRightMarginStyle(null)
+        setMarginCreatedInit(false)
+    }));
+
+    //item click
+    const itemClickMain = (item, items)=>{
+
+        setCurrItemId(item.id)
+        if(itemClick){
+            itemClick.bind(null, item, items)()
+        }
+
+    }
+
     return (
         
-        <div style={styleContainer}>
-            
+        <div style={styleContainer} ref={refContainer}>
+            {leftMarginStyle && <div style={leftMarginStyle}></div>}
             {items && items.map((item, i) => {
-                return <div key={item.id} style={item.focus?styleItemFocus:styleItem} onClick={itemClick.bind(null, item, items)}>{item.name}</div>
+                return <div data-id={item.id} data-focus={item.focus} key={item.id} style={item.focus?styleItemFocus:styleItem} onClick={itemClickMain.bind(null, item, items)}>{item.name}</div>
             })}
-            
+            {rightMarginStyle && <div style={rightMarginStyle}></div>}
         </div>
         
     )
