@@ -1,5 +1,6 @@
 .main{
     padding:10px 0px;
+    overflow-y:auto;
 }
 .main>*{
     margin:10px;
@@ -16,7 +17,35 @@
     transform: rotate(45deg);
 }
 
+.divContent{
+    background:rgb(233, 233, 233);
+    height:1px;
+    padding:0px;
+}
+
+.topPanel{
+    position:absolute;
+}
+
 .logo{
     color:rgb(196, 196, 196);
     font-weight: 600;
+}
+
+.replyView{
+    margin:20px 10px;
+}
+.replyInput{
+    width:100%;
+    height:40px;
+    border:1px solid rgb(187, 187, 187);
+    border-left:0px;
+    border-right:0px;
+}
+.replyInput:active{
+    outline: 0px;
+    place-content: 33;
+}
+.replyInput:focus{
+    outline: 0px;
 }
