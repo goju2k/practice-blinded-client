@@ -11,10 +11,8 @@ import { useState, useEffect } from 'react';
 //router
 import { useRouter } from 'next/router'
 
-const testreplay = []
-for(let i = 0 ; i < 50 ; i++){
-    testreplay.push(i)
-}
+//util
+import DateUtil from '/modules/util/Date.js'
 
 export default function MainDetail() {
 
@@ -33,7 +31,18 @@ export default function MainDetail() {
     useEffect(async ()=>{
 
         setLoading(true)
-        const {data} = await axios.get('board/detail', {params:{id:router.query.id}})
+        let {data} = await axios.get('board/detail', {params:{id:router.query.id}})
+
+        if(data){
+            Object.assign(data, JSON.parse(router.query.ct))
+            data.ok = true
+            
+        }else{
+            data = {ok:false}
+        }
+        
+        console.log('[MainDetail] detail data', data);
+
         setDetail(data)
         setLoading(false)
         
@@ -45,7 +54,7 @@ export default function MainDetail() {
 
     return (
         <BaseLayout loadingProp={loadingProp}>
-
+            {detail && (detail.ok ?
             <div className={styles.main}>
 
                 {/** 상단 메뉴 **/}
@@ -59,25 +68,27 @@ export default function MainDetail() {
                 </div>
 
                 {/** 타이틀 **/}
-                <div className='font10'>{'오늘의웹툰 백엔드 개발자 형들 상담좀 해줄수있을까'}</div>
+                <div className='font10'>{detail.title}</div>
 
                 {/** 소속 / 닉네임 **/}
                 <div className='justStart font3'>
-                    <div>{'삼성전자'}</div><div>{'닉닉닉'}</div>
+                    <div>{detail.group}</div><div>{detail.nick}</div>
                 </div>
 
                 {/** 시간 **/}
-                <div className='font3'>{'9분'}</div>
+                <div className='font3'>{DateUtil.getTimeToApxText(detail.time)}</div>
 
                 {/** 본문 구분선 상단 **/}
                 <div className={styles.divContent}></div>
 
                 {/** 본문 **/}
-                <div className='wsPre font6'>{'상담해줄 수 있는 웹툰 백엔드 개발자 형들 있을까?\n\n도메인이 달라서 내가 가진 경험을 어떤식으로 어필하는게 좋을지 고민인데.. 혼자 머리 싸매고 있어봐야 답이 없는것같아\n\n작은조언이라도 너무 도움이 될 것 같아\n부탁할게!'}</div>
+                <div className='wsPre font6'>{detail.content}</div>
 
                 {/** 태그 **/}
-                <div className='link font6'>{'#XXX웹툰'}</div>
-
+                {detail.tags.map((el, i)=>{
+                    return <div className='link font6' key={i}>{el}</div>
+                })}
+                
                 {/** 광고 **/}
                 <div className='font6'>{'내 듀오 가입비 5초 확인!!!'}</div>
 
@@ -102,12 +113,14 @@ export default function MainDetail() {
 
                 {/** 댓글 디스플레이 **/}
                 <div className='font6'>
-                    {testreplay.map(elem => {
-                        return <div><div className={styles.divContent}></div><div key={elem} className={styles.replyView} placeholder="댓글을 남겨주세요.">{'댓글 '+elem}</div></div>
+                    {detail.replyList.map(elem => {
+                        return <div><div className={styles.divContent}></div><div key={elem.id} className={styles.replyView} placeholder="댓글을 남겨주세요.">{elem.content}</div></div>
                     })}
                 </div>
 
             </div>
+            :<div className='justCenter' style={{width:'100%',height:'100vh',border:'1px solid gray', padding:'20px'}}>No Data</div>
+            )}
 
         </BaseLayout>
     )
