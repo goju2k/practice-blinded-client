@@ -12,9 +12,14 @@ import axios from '/modules/axios'
 //hook
 import { useState, useEffect } from 'react';
 
+//router
+import { useRouter } from 'next/router'
+
 export default function MainList() {
     
-    console.log('[MainList] start');
+    const router = useRouter()
+    console.log('[MainList] start', router.query);
+
     /**
      * === [Loading Start] ======================================================
      */
@@ -33,7 +38,7 @@ export default function MainList() {
         setLoading(true)
         const {data} = await axios.get('category/list')
         data && data.forEach(elem => {
-            if(elem.id == 1){
+            if(elem.id == router.query.id){
                 elem.focus = true
             }else{
                 elem.focus = false
@@ -50,7 +55,7 @@ export default function MainList() {
      */
 
     //curr Category - 초기값 : id:1
-    const [currCategoryId, setCurrCategoryId] = useState(1)
+    const [currCategoryId, setCurrCategoryId] = useState(router.query.id)
     const [boardList, setBoardList] = useState([])
     useEffect(async ()=>{
         const {data} = await axios.get('board/list', {params:{inqType:'1', id:currCategoryId}})
@@ -82,6 +87,7 @@ export default function MainList() {
             setBoardList(null) //리스트 초기화
             setCurrCategoryId(targetId) //Category 변경
             setLoading(true)
+            //router.push('/main/list/'+targetId)
         }
         
     }
@@ -89,7 +95,7 @@ export default function MainList() {
     //boardItemClick 이벤트
     const boardItemClick = function(item){
 
-        
+        router.push('/main/detail', null, {shallow:true})
 
     }
     
@@ -99,11 +105,7 @@ export default function MainList() {
             <TopMenu items={categoryList} itemClick={itemClick}></TopMenu>
 
             <BoardList items={boardList} itemClick={boardItemClick}></BoardList>
-
-            {/* {boardList && boardList.map((item, i) => {
-                return <div style={{padding:'15px 10px'}} key={item.cid} >{item.title}</div>
-            })} */}
-
+            
         </BaseLayout>
     )
 

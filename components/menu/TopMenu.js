@@ -59,20 +59,37 @@ const setToCenter = function(elem, currItemId){
 //hook
 import { useState, useEffect, useRef } from 'react';
 
+//router
+import { useRouter } from 'next/router'
+
 export default function TopMenu({children, items, itemClick}) {
 
-    console.log('[TopMenu] start');
+    const router = useRouter()
+    console.log('[TopMenu] start', router.query);
+    const qId = Number(router.query.id)
 
     /**
      * === [curr item change] ======================================================
      */
-    const [currItemId, setCurrItemId] = useState(null);
+    const [currItemId, setCurrItemId] = useState(qId);
     const refContainer = useRef(null)
 
     if(currItemId === null && items){
         const [initActiveItem] = items.filter(item=>item.focus === true)
         if(initActiveItem){
             setCurrItemId(initActiveItem.id)
+        }
+    }
+
+    console.log('[TopMenu] currItemId', currItemId);
+
+    if(qId != currItemId){
+        const [activeItem] = items.filter(item=>item.id === qId)
+        if(activeItem){
+            setCurrItemId(activeItem.id)
+        }
+        if(itemClick){
+            itemClick.bind(null, activeItem, items, false)()
         }
     }
 
@@ -144,10 +161,11 @@ export default function TopMenu({children, items, itemClick}) {
     //item click
     const itemClickMain = (item, items)=>{
 
-        setCurrItemId(item.id)
-        if(itemClick){
-            itemClick.bind(null, item, items)()
-        }
+        router.push('/main/list/'+item.id)
+        // setCurrItemId(item.id)
+        // if(itemClick){
+        //     itemClick.bind(null, item, items)()
+        // }
 
     }
 

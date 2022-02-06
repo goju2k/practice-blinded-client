@@ -24,7 +24,7 @@ export default function Home() {
 
         <div className={styles.grid}>
         
-          <Link href="/main/list"><a className={styles.card}>글 목록</a></Link>
+          <Link href="/main/list/2"><a className={styles.card}>글 목록</a></Link>
           <Link href="/main/detail"><a className={styles.card}>글 메인</a></Link>
           
         </div>
