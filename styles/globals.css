@@ -80,4 +80,5 @@ a {
 .link{
     color:rgb(81, 160, 197);
     text-decoration: underline;
+    padding:10px 10px 10px 0px;
 }

@@ -85,9 +85,11 @@ export default function MainDetail() {
                 <div className='wsPre font6'>{detail.content}</div>
 
                 {/** 태그 **/}
+                <div className='justStart font6'>
                 {detail.tags.map((el, i)=>{
-                    return <div className='link font6' key={i}>{el}</div>
+                    return <div className='link' key={i}>{el}</div>
                 })}
+                </div>
                 
                 {/** 광고 **/}
                 <div className='font6'>{'내 듀오 가입비 5초 확인!!!'}</div>
