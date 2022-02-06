@@ -2,6 +2,9 @@ import styles from '/styles/main/detail/Detail.module.css'
 
 import BaseLayout from '/components/layout/BaseLayout.js'
 
+//api
+import axios from '/modules/axios'
+
 //hook
 import { useState, useEffect } from 'react';
 
@@ -22,6 +25,19 @@ export default function MainDetail() {
      */
     const [loading, setLoading] = useState(false)
     const loadingProp = {loading, setLoading}
+
+    /**
+     * === [Deatail Start] ======================================================
+     */
+     const [detail, setDetail] = useState(null)
+    useEffect(async ()=>{
+
+        setLoading(true)
+        const {data} = await axios.get('board/detail', {params:{id:router.query.id}})
+        setDetail(data)
+        setLoading(false)
+        
+    }, [])
 
     const backClick = () => {
         router.back()

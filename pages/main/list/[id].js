@@ -95,7 +95,10 @@ export default function MainList() {
     //boardItemClick 이벤트
     const boardItemClick = function(item){
 
-        router.push('/main/detail', null, {shallow:true})
+        router.push({
+            pathname: '/main/detail/'+item.id,
+            query: { ct: JSON.stringify(item) },
+        })
 
     }
     
