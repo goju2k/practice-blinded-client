@@ -15,12 +15,17 @@ for(let i = 0 ; i < 50 ; i++){
 
 export default function MainDetail() {
 
-    console.log('[MainDetail] start');
+    const router = useRouter()
+    console.log('[MainDetail] start', router.query)
     /**
      * === [Loading Start] ======================================================
      */
     const [loading, setLoading] = useState(false)
     const loadingProp = {loading, setLoading}
+
+    const backClick = () => {
+        router.back()
+    }
 
     return (
         <BaseLayout loadingProp={loadingProp}>
@@ -30,7 +35,7 @@ export default function MainDetail() {
                 {/** 상단 메뉴 **/}
                 <div className='justBetween topPanel'>
                     <div className='justStart'>
-                        <div className={styles.leftArrow}></div><div className={'font8 '+styles.logo}>{'blinded'}</div>
+                        <div className={styles.leftArrow} onClick={backClick}></div><div className={'font8 '+styles.logo}>{'blinded'}</div>
                     </div>
                     <div className='justEnd'>
                         <div>{'ㅁ'}</div><div>{'^'}</div><div>{'...'}</div>
