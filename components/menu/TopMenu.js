@@ -83,7 +83,7 @@ export default function TopMenu({children, items, itemClick}) {
 
     console.log('[TopMenu] currItemId', currItemId);
 
-    if(qId != currItemId){
+    if(qId != currItemId && items){
         const [activeItem] = items.filter(item=>item.id === qId)
         if(activeItem){
             setCurrItemId(activeItem.id)
@@ -139,7 +139,7 @@ export default function TopMenu({children, items, itemClick}) {
             setToCenter(elem, currItemId)
 
             // observe elems
-            resizeObserver.observe(elem);
+            // resizeObserver.observe(elem);
 
         }
 
@@ -150,13 +150,13 @@ export default function TopMenu({children, items, itemClick}) {
      */
 
     //resize
-    const [resizeObserver] = useState(new ResizeObserver( entries => {
-        console.log('ResizeObserver start =>',entries)
-        setCurrItemId(null)
-        setLeftMarginStyle(null)
-        setRightMarginStyle(null)
-        setMarginCreatedInit(false)
-    }));
+    // const [resizeObserver] = useState(new ResizeObserver( entries => {
+    //     console.log('ResizeObserver start =>',entries)
+    //     setCurrItemId(null)
+    //     setLeftMarginStyle(null)
+    //     setRightMarginStyle(null)
+    //     setMarginCreatedInit(false)
+    // }));
 
     //item click
     const itemClickMain = (item, items)=>{
