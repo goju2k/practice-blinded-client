@@ -14,7 +14,9 @@
     border-bottom:2px solid rgb(61, 61, 61);
     width:14px;
     height:14px;
+    margin-right:10px;
     transform: rotate(45deg);
+    cursor:pointer;
 }
 
 .divContent{
