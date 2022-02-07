@@ -33,20 +33,26 @@ export default function MainList() {
     //category 초기화
     const [categoryList, setCategoryList] = useState()
     //category 는 한번만 조회
-    useEffect(async ()=>{
+    useEffect(()=>{
         
-        setLoading(true)
-        const {data} = await axios.get('category/list')
-        data && data.forEach(elem => {
-            if(elem.id == router.query.id){
-                elem.focus = true
-            }else{
-                elem.focus = false
-            }
-        });
+        const func = async ()=>{
 
-        setCategoryList(data)
-        setLoading(false)
+            setLoading(true)
+            const {data} = await axios.get('category/list')
+            data && data.forEach(elem => {
+                if(elem.id == router.query.id){
+                    elem.focus = true
+                }else{
+                    elem.focus = false
+                }
+            });
+    
+            setCategoryList(data)
+            setLoading(false)
+
+        }
+
+        func()
 
     }, [])
 
@@ -57,10 +63,16 @@ export default function MainList() {
     //curr Category - 초기값 : id:1
     const [currCategoryId, setCurrCategoryId] = useState(router.query.id)
     const [boardList, setBoardList] = useState([])
-    useEffect(async ()=>{
-        const {data} = await axios.get('board/list', {params:{inqType:'1', id:currCategoryId}})
-        setBoardList(data)
-        setLoading(false)
+    useEffect(()=>{
+
+        const func = async ()=>{
+            const {data} = await axios.get('board/list', {params:{inqType:'1', id:currCategoryId}})
+            setBoardList(data)
+            setLoading(false)
+        }
+
+        func()
+
     }, [currCategoryId])
 
     /**

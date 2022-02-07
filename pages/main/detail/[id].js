@@ -28,23 +28,29 @@ export default function MainDetail() {
      * === [Deatail Start] ======================================================
      */
      const [detail, setDetail] = useState(null)
-    useEffect(async ()=>{
+    useEffect(()=>{
 
-        setLoading(true)
-        let {data} = await axios.get('board/detail', {params:{id:router.query.id}})
+        const func = async ()=>{
 
-        if(data){
-            Object.assign(data, JSON.parse(router.query.ct))
-            data.ok = true
+            setLoading(true)
+            let {data} = await axios.get('board/detail', {params:{id:router.query.id}})
+
+            if(data){
+                Object.assign(data, JSON.parse(router.query.ct))
+                data.ok = true
+                
+            }else{
+                data = {ok:false}
+            }
             
-        }else{
-            data = {ok:false}
-        }
-        
-        console.log('[MainDetail] detail data', data);
+            console.log('[MainDetail] detail data', data);
 
-        setDetail(data)
-        setLoading(false)
+            setDetail(data)
+            setLoading(false)
+
+        }
+
+        func()
         
     }, [])
 
