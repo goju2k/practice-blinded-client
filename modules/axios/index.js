@@ -4,7 +4,7 @@
 
 import axios from 'axios'
 
-const target = 'http://localhost:3001/'
+const target = process.env.API_TARGET || 'http://localhost:3001/'
 
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
